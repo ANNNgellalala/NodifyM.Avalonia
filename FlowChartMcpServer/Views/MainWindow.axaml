@@ -12,45 +12,28 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="FlowChart">
     <Grid>
-        <StackPanel ZIndex="1">
+        <StackPanel ZIndex="1" MaxWidth="150" HorizontalAlignment="Left">
             <Button  Content="Switch Theme" Command="{Binding ChangeThemeCommand}"></Button>
-            <Button ZIndex="1" Content="new" ></Button>
-            <TextBlock Text="{Binding #Editor.SelectedItem}"></TextBlock>
+            <TextBlock Text="{Binding SelectedChart.Name}"></TextBlock>
+            <TextBlock Text="{Binding SelectedChart.Nodes.Count}"></TextBlock>
+            <TextBlock Text="{Binding SelectedChart.Connections.Count}"></TextBlock>
+            <ComboBox ItemsSource="{Binding ChartList}"
+                      SelectedItem="{Binding SelectedChart}" 
+                      DisplayMemberBinding="{Binding Name}"></ComboBox>
         </StackPanel>
 
         <controls:NodifyEditor x:Name="Editor"
+            DataContext="{Binding SelectedChart, Mode=OneWay}"
             Background="Transparent"
-            ItemsSource="{Binding Nodes }"
+            ItemsSource="{Binding Nodes}"
             Connections="{Binding Connections}"
             PendingConnection="{Binding PendingConnection}"
             DisconnectConnectorCommand="{Binding DisconnectConnectorCommand}">
-            <controls:NodifyEditor.DataTemplates>
-                <DataTemplate DataType="viewModelBase:KnotNodeViewModel">
-                    <controls:KnotNode
-                        Location="{Binding Location,Mode=TwoWay}"
-                        Content="{Binding Connector}">
-                        <controls:KnotNode.ContentTemplate>
-                            <DataTemplate DataType="viewModelBase:ConnectorViewModelBase">
-                                <controls:Connector
-                                    VerticalAlignment="Center"
-                                    IsConnected="{Binding IsConnected}"
-                                    Anchor="{Binding Anchor, Mode=OneWayToSource}">
-                                    <controls:Connector.BorderBrush>
-                                        <SolidColorBrush
-                                            Color="CornflowerBlue"
-                                            Opacity="0.5" />
-                                    </controls:Connector.BorderBrush>
-                                </controls:Connector>
-                            </DataTemplate>
-                        </controls:KnotNode.ContentTemplate>
-                    </controls:KnotNode>
-                </DataTemplate>
-
-            </controls:NodifyEditor.DataTemplates>
+            
             <controls:NodifyEditor.Resources>
                 <converters:FlowToDirectionConverter x:Key="FlowToDirectionConverter" />
-
             </controls:NodifyEditor.Resources>
+            
             <controls:NodifyEditor.GridLineTemplate>
                 <DataTemplate>
                     <controls:LargeGridLine Width="{Binding $parent[controls:NodifyEditor].Bounds.Width}"
@@ -64,6 +47,7 @@
                                             ZIndex="-2" />
                 </DataTemplate>
             </controls:NodifyEditor.GridLineTemplate>
+            
             <controls:NodifyEditor.ConnectionTemplate>
                 <DataTemplate DataType="{x:Type viewModelBase:ConnectionViewModelBase}">
                     <Grid>
@@ -87,9 +71,9 @@
                             </controls:Connection.ContextMenu>
                         </controls:Connection>
                     </Grid>
-
                 </DataTemplate>
             </controls:NodifyEditor.ConnectionTemplate>
+            
             <controls:NodifyEditor.PendingConnectionTemplate>
                 <DataTemplate DataType="{x:Type viewModelBase:PendingConnectionViewModelBase}">
                     <controls:PendingConnection
@@ -109,12 +93,10 @@
                                              Opacity="0.8" />
                         </controls:PendingConnection.Background>
                         <TextBlock Text="{Binding PreviewText}" />
-
-
                     </controls:PendingConnection>
-
                 </DataTemplate>
             </controls:NodifyEditor.PendingConnectionTemplate>
+            
             <controls:NodifyEditor.ItemTemplate>
                 <DataTemplate DataType="viewModelBase:NodeViewModelBase">
                     <controls:Node x:Name="Node"
@@ -177,9 +159,7 @@
                         </controls:Node.OutputConnectorTemplate>
                     </controls:Node>
                 </DataTemplate>
-
             </controls:NodifyEditor.ItemTemplate>
-
         </controls:NodifyEditor>
     </Grid>
 </Window>
