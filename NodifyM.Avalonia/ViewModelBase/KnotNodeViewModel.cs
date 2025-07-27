@@ -6,5 +6,6 @@ namespace NodifyM.Avalonia.ViewModelBase;
 public partial class KnotNodeViewModel : BaseNodeViewModel
 {
     
-    [ObservableProperty] private ConnectorViewModelBase _connector = new();
+    [ObservableProperty] 
+    private ConnectorViewModelBase _connector = new();
 }

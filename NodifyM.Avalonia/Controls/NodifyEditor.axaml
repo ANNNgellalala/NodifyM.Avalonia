@@ -1,10 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:viewModelBase="clr-namespace:NodifyM.Avalonia.ViewModelBase"
-        xmlns:converters="clr-namespace:Avalonia.Controls.Converters;assembly=Avalonia.Controls"
-        xmlns:nodify="clr-namespace:NodifyM"
         xmlns:controls="clr-namespace:NodifyM.Avalonia.Controls"
-        xmlns:converters1="clr-namespace:NodifyM.Avalonia.Converters"
         xmlns:viewModelBase1="clr-namespace:NodifyM.Avalonia.ViewModelBase">
     <Design.PreviewWith>
         <controls:NodifyEditor >
@@ -12,7 +8,16 @@
 
         </controls:NodifyEditor>
     </Design.PreviewWith>
-
+    
+    <Styles.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceInclude Source="avares://NodifyM.Avalonia/ResourceDictionaries/Nodify.axaml" />
+                <ResourceInclude Source="avares://NodifyM.Avalonia/ResourceDictionaries/Brushes.axaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Styles.Resources>
+    
     <Style Selector="controls|NodifyEditor">
         
         <!-- Set Defaults -->

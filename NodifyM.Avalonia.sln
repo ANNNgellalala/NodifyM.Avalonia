@@ -2,7 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodifyM.Avalonia", "NodifyM.Avalonia\NodifyM.Avalonia.csproj", "{A2A4B4D6-773A-454C-B42F-1451A4D773A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodifyM.Avalonia.Example", "NodifyM.Avalonia.Example\NodifyM.Avalonia.Example.csproj", "{202009E1-19F0-4EFE-8D0A-6800E21A46BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowChartMcpServer", "FlowChartMcpServer\FlowChartMcpServer.csproj", "{C8B58286-F961-4BED-9F5A-1F911A9CE2B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowChartMcpClient", "FlowChartMcpClient\FlowChartMcpClient.csproj", "{A8DD3448-6694-4C7A-BDAA-27B380884AE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +16,13 @@ Global
 		{A2A4B4D6-773A-454C-B42F-1451A4D773A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2A4B4D6-773A-454C-B42F-1451A4D773A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2A4B4D6-773A-454C-B42F-1451A4D773A7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{202009E1-19F0-4EFE-8D0A-6800E21A46BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{202009E1-19F0-4EFE-8D0A-6800E21A46BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{202009E1-19F0-4EFE-8D0A-6800E21A46BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{202009E1-19F0-4EFE-8D0A-6800E21A46BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8B58286-F961-4BED-9F5A-1F911A9CE2B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8B58286-F961-4BED-9F5A-1F911A9CE2B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8B58286-F961-4BED-9F5A-1F911A9CE2B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8B58286-F961-4BED-9F5A-1F911A9CE2B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8DD3448-6694-4C7A-BDAA-27B380884AE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8DD3448-6694-4C7A-BDAA-27B380884AE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8DD3448-6694-4C7A-BDAA-27B380884AE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8DD3448-6694-4C7A-BDAA-27B380884AE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

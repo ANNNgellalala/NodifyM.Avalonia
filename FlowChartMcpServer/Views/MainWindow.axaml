@@ -3,17 +3,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:NodifyM.Avalonia.Controls;assembly=NodifyM.Avalonia"
-        xmlns:example="clr-namespace:NodifyM.Avalonia.Example"
         xmlns:viewModelBase="clr-namespace:NodifyM.Avalonia.ViewModelBase;assembly=NodifyM.Avalonia"
         xmlns:converters="clr-namespace:NodifyM.Avalonia.Converters;assembly=NodifyM.Avalonia"
+        xmlns:viewModels="clr-namespace:FlowChartMcpServer.ViewModels"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="NodifyM.Avalonia.Example.MainWindow"
-        x:DataType="example:MainWindowViewModel"
-        Title="Nodify.Avalonia.Example">
+        x:Class="FlowChartMcpServer.Views.MainWindow"
+        x:DataType="viewModels:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="FlowChart">
     <Grid>
         <StackPanel ZIndex="1">
             <Button  Content="Switch Theme" Command="{Binding ChangeThemeCommand}"></Button>
-            <Button ZIndex="1" Content="new"  Click="Button_OnClick"></Button>
+            <Button ZIndex="1" Content="new" ></Button>
             <TextBlock Text="{Binding #Editor.SelectedItem}"></TextBlock>
         </StackPanel>
 

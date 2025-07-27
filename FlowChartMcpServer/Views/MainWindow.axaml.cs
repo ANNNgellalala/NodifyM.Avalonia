@@ -1,7 +1,7 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
+using FlowChartMcpServer.ViewModels;
 
-namespace NodifyM.Avalonia.Example;
+namespace FlowChartMcpServer.Views;
 
 public partial class MainWindow : Window
 {
@@ -9,10 +9,5 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext=new MainWindowViewModel();
-    }
-
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
-    {
-        new MainWindow().Show();
     }
 }
