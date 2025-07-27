@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
+using CommunityToolkit.Mvvm.Messaging;
+using FlowChartMcpServer.Messengers.Messages;
 using FlowChartMcpServer.Models;
 using ModelContextProtocol.Server;
 
@@ -27,6 +29,7 @@ public class FlowChartTools
         {
             Name = name, Description = description
         };
+        WeakReferenceMessenger.Default.Send(new FlowChartMessage(flowChart, FlowChartMessageType.Create));
         flowChartManager.FlowCharts.Add(name, flowChart);
         logger.LogInformation("创建流程图 '{Name}'", name);
         return await Task.FromResult($"流程图 '{name}' 已创建。请记住流程图名称{name}，以便后续操作。");
@@ -53,6 +56,9 @@ public class FlowChartTools
         };
 
         flowChart.Nodes.Add(node.Id, node);
+        var message = new FlowChartMessage(flowChart, FlowChartMessageType.AddNodes);
+        message.Nodes = [node];
+        WeakReferenceMessenger.Default.Send(message);
         logger.LogInformation("在流程图 '{FlowChartName}' 中添加节点 '{NodeName}'", flowChartName, nodeName);
         return await Task.FromResult($"节点 '{nodeName}' 已添加到流程图 '{flowChartName}'。");
     }
@@ -76,7 +82,7 @@ public class FlowChartTools
             return "节点列表为空。请提供有效的节点列表。";
         }
 
-        var successfulAdditions = new List<string>();
+        var successfulAdditions = new List<FlowChartNode>();
         foreach (var node in nodes)
         {
             if (!flowChart.Nodes.TryAdd(node.Id, node))
@@ -85,11 +91,14 @@ public class FlowChartTools
                 continue;
             }
 
-            successfulAdditions.Add(node.Id);
+            successfulAdditions.Add(node);
             logger.LogInformation("在流程图 '{FlowChartName}' 中添加节点 '{NodeId}'", flowChartName, node.Id);
         }
 
-        return await Task.FromResult($"已添加 {nodes.Count} 个节点到流程图 '{flowChartName}'，成功添加的节点有：{String.Join(", ", successfulAdditions)}。");
+        var message = new FlowChartMessage(flowChart, FlowChartMessageType.AddNodes);
+        message.Nodes = successfulAdditions;
+        WeakReferenceMessenger.Default.Send(message);
+        return await Task.FromResult($"已添加 {nodes.Count} 个节点到流程图 '{flowChartName}'，成功添加的节点有：{String.Join(", ", successfulAdditions.Select(item => item.Id))}。");
     }
 
     [McpServerTool]
@@ -118,6 +127,9 @@ public class FlowChartTools
             FromNodeId = fromNodeName, ToNodeId = toNodeName, Description = connectionDescription
         };
         flowChart.Connections.Add(connection);
+        var message = new FlowChartMessage(flowChart, FlowChartMessageType.AddConnections);
+        message.Connections = [connection];
+        WeakReferenceMessenger.Default.Send(message);
         logger.LogInformation("在流程图 '{FlowChartName}' 中添加连接从 '{FromNodeName}' 到 '{ToNodeName}'", flowChartName, fromNodeName, toNodeName);
         return await Task.FromResult($"连接从 '{fromNodeName}' 到 '{toNodeName}' 已添加到流程图 '{flowChartName}'。");
     }
@@ -141,13 +153,13 @@ public class FlowChartTools
             return "连接列表为空。请提供有效的连接列表。";
         }
 
-        var successfulAdditions = new List<string>();
+        var successfulAdditions = new List<FlowChartConnection>();
         foreach (var connection in connections)
         {
             if (!flowChart.Connections.Contains(connection))
             {
                 flowChart.Connections.Add(connection);
-                successfulAdditions.Add($"{connection.FromNodeId} -> {connection.ToNodeId}");
+                successfulAdditions.Add(connection);
                 logger.LogInformation("在流程图 '{FlowChartName}' 中添加连接从 '{FromNodeId}' 到 '{ToNodeId}'", flowChartName, connection.FromNodeId, connection.ToNodeId);
             }
             else
@@ -156,7 +168,10 @@ public class FlowChartTools
             }
         }
 
-        return await Task.FromResult($"已添加 {connections.Count} 个连接到流程图 '{flowChartName}'，成功添加的连接有：{String.Join(", ", successfulAdditions)}。");
+        var message = new FlowChartMessage(flowChart, FlowChartMessageType.AddConnections);
+        message.Connections = successfulAdditions;
+        WeakReferenceMessenger.Default.Send(message);
+        return await Task.FromResult($"已添加 {connections.Count} 个连接到流程图 '{flowChartName}'，成功添加的连接有：{String.Join(", ", successfulAdditions.Select(item => $"{item.FromNodeId} -> {item.ToNodeId}"))}。");
     }
 
     [McpServerTool]

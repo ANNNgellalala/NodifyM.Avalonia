@@ -9,8 +9,12 @@ namespace FlowChartMcpServer;
 
 internal class Program
 {
+    public static IServiceProvider GlobalServiceProvider { get; set; }
+
+    public static CancellationTokenSource EndSignal { get; set; } = new();
+    
     [STAThread]
-    public static void Main(
+    public static async Task Main(
         string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -33,20 +37,25 @@ internal class Program
         // DI
         builder.Services.AddSingleton<FlowChartManager>();
 
-        var app = builder.Build();
+        var webApp = builder.Build();
+        GlobalServiceProvider = webApp.Services;
 
         // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-            app.MapOpenApi();
+        if (webApp.Environment.IsDevelopment())
+            webApp.MapOpenApi();
 
-        if (app.Environment.IsProduction())
-            app.UseHttpsRedirection();
+        if (webApp.Environment.IsProduction())
+            webApp.UseHttpsRedirection();
 
-        app.MapMcp();
-        app.RunAsync();
+        webApp.MapMcp();
+        _ = webApp.RunAsync(EndSignal.Token);
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+        await EndSignal.CancelAsync();
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
-    public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure<App>().UsePlatformDetect().WithInterFont().LogToTrace();
+    public static AppBuilder BuildAvaloniaApp() => AppBuilder.Configure(() => new App(GlobalServiceProvider))
+                                                             .UsePlatformDetect()
+                                                             .WithInterFont()
+                                                             .LogToTrace();
 }

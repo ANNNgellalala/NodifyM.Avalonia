@@ -7,8 +7,10 @@ using FlowChartMcpServer.Views;
 
 namespace FlowChartMcpServer;
 
-public partial class App : Application
+public partial class App(IServiceProvider serviceProvider) : Application
 {
+    private IServiceProvider ServiceProvider { get; set; } = serviceProvider;
+    
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -16,6 +18,12 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        // Set the application service provider
+        if (ServiceProvider is null)
+        {
+            throw new ArgumentNullException(nameof(ServiceProvider), "ServiceProvider cannot be null.");
+        }
+        
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
@@ -23,7 +31,7 @@ public partial class App : Application
             DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = new MainWindowViewModel(ServiceProvider),
             };
         }
 
